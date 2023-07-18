@@ -1,0 +1,13 @@
+form {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fcfcfc;
+  padding: 30px 40px;
+  button{
+    color : #fff;
+    background-color: #7f41d8;
+    border-radius: 6px;
+    width: 100%;
+  }
+}
