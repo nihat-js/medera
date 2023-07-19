@@ -1,7 +1,7 @@
-import Database from "./Database.js"
+import Auth from "./Auth.js"
 
 let isLogged = false
-let res = Database.checkSavedCredentials()
+let res = Auth.checkSavedCredentials()
 if (res) {
   isLogged = true
 } else {
@@ -24,7 +24,7 @@ function handleLogin(e) {
     return
   }
 
-  let answer = Database.checkCredentials(usernameInp.value, passwordInp.value)
+  let answer = Auth.checkCredentials(usernameInp.value, passwordInp.value)
   if (!answer) {
     errorEl.textContent = "Check credentials again"
     passwordInp.value = ""
@@ -70,6 +70,45 @@ function renderNav() {
 }
 
 
+function renderVisitModalFields() {
+  console.log('changing...')
+  let doctor = document.querySelector('.create-visit-modal .doctor')
+  let purpose = document.querySelector('.create-visit-modal .purpose')
+  let description = document.querySelector('.create-visit-modal .description')
+  let urgency = document.querySelector('.create-visit-modal .urgency')
+  let fullName = document.querySelector('.create-visit-modal .full-name')
+
+  let lowBloodPressure = document.querySelector('.create-visit-modal .low-blood-pressure ')
+  let highBloodPressure = document.querySelector('.create-visit-modal  .high-blood-pressure ')
+  let BMI = document.querySelector('.create-visit-modal .bmi')
+  let previouslyDiseases = document.querySelector('.create-visit-modal .previously-diseases ')
+  let age = document.querySelector('.create-visit-modal .age')
+  let lastVisitDate = document.querySelector('.create-visit-modal .last-visit-date')
+
+  let extras = [lowBloodPressure, highBloodPressure, BMI, previouslyDiseases, age, lastVisitDate]
+  console.log(extras)
+  for (let extra of extras) {
+    extra.style.display = "none"
+  }
+
+  switch (doctor.value) {
+    case "cardiologist":
+      lowBloodPressure.style.display = "block"
+      highBloodPressure.style.display = "block"
+      BMI.style.display = "block"
+      previouslyDiseases.style.display = "block"
+      break;
+    case "dentist":
+      lastVisitDate.style.display = "block"
+      break;
+    case "therapist":
+      age.style.display = "block"
+      break;
+
+  }
+}
+
 
 document.querySelector(".modal-login .btn-login").onclick = handleLogin
 document.querySelector(".nav .btn-logout").onclick = handleLogout
+document.querySelector(".create-visit-modal .doctor ").onchange = renderVisitModalFields

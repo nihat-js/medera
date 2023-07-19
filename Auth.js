@@ -1,4 +1,4 @@
-export default class Database {
+export default class Auth {
   static users = [
     {
       username: "admin",
