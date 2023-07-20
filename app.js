@@ -1,4 +1,5 @@
 import Auth from "./Auth.js"
+import { VisitCardiologist, VisitDentist, VisitTherapist } from "./Visit.js"
 
 let isLogged = false
 let res = Auth.checkSavedCredentials()
@@ -107,7 +108,36 @@ function renderVisitModalFields() {
 
   }
 }
+let visits = [
+  {
+    fullName: "Nihat Abdullazade",
+    doctor: "cardiologist",
+    age: 18,
+    reason: "Bllllo"
+  }
+]
 
+
+for (let visit of visits) {
+  let V
+  switch (visit.doctor) {
+    case "cardiologist":
+      V = new VisitCardiologist(visit)
+      break;
+    case "dentist":
+      V = new VisitDentist(visit)
+      break;
+    case "therapist" : 
+      V = new VisitTherapist(visit)  
+      break;
+  }
+
+  let div = V.render()
+  document.querySelector('.visits-board').append(div)
+
+
+
+}
 
 document.querySelector(".modal-login .btn-login").onclick = handleLogin
 document.querySelector(".nav .btn-logout").onclick = handleLogout
