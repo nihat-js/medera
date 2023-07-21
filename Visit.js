@@ -1,9 +1,9 @@
 export class Visit {
-  showMore = false
-  status = open
-  createdAt = Date.now()
-  parentDiv = null
-  showMoreBtn = null
+  #showMore = false
+  #status = "open"
+  #createdAt = Date.now()
+  #parentDiv = null
+  #showMoreBtn = null
   constructor({ doctor, purpose, description, urgency, fullName, }) {
     this.doctor = doctor
     this.purpose = purpose
@@ -19,7 +19,7 @@ export class Visit {
       for (let field of fields) {
         field.style.display = 'none'
       }
-      this.showMoreBtn.innerText = "Show More"
+      this.#showMoreBtn.innerText = "Show More"
     } else {
       for (let field of fields) {
         field.style.display = 'block'
@@ -34,7 +34,6 @@ export class Visit {
     div.classList = "box"
     for (let key in this) {
       let h3 = document.createElement("h3")
-      console.log(key)
       h3.innerText = `${key} :  ${this.key} `
       let isExtra = key != "fullName" && key != "doctor"
       h3.classList.add(key)

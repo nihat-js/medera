@@ -1,26 +1,32 @@
 import Database from './Database.js';
 export default class Auth {
-
-  static checkSavedCredentials() {
-    let obj = JSON.parse(localStorage.getItem('credentials'))
-    if (!obj) return false
-    let username = obj.username
-    let password = obj.password
-    return Auth.checkCredentials(username,password)
+  static logout() {
+    localStorage.setItem('credentials', null)
   }
-
-  static checkCredentials(username, password) {
-    let db= new Database()
-    let users = db.getUsers()
-    for (let user of Auth.users) {
-      if (user.username == username && user.password == password) {
-        return true
+  static getToken() {
+    try {
+      let object = JSON.parse(localStorage.credentials)
+      if (object.token) {
+        return object.token
       }
+    } catch (e) {
+      console.log("Error parsing credentials", e)
     }
     return false
   }
-
-
-
+  static setToken(token) {
+    try {
+      let object = JSON.parse(localStorage.credentials)
+      if (object) {
+        object = { token, ...object }
+      } else {
+        object = { token }
+      }
+      localStorage.setItem('credentials', object)
+    } catch (e) {
+      console.log("Error parsing credentials", e)
+    }
+    return false
+  }
 }
 

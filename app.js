@@ -1,16 +1,20 @@
+import { Api } from "./Api.js"
 import Auth from "./Auth.js"
 import { VisitCardiologist, VisitDentist, VisitTherapist } from "./Visit.js"
 
+
 let isLogged = false
-let res = Auth.checkSavedCredentials()
-if (res) {
+let api
+
+let token = Auth.getToken()
+if (token) {
   isLogged = true
-} else {
-  localStorage.clear('credentials')
 }
+console.log({ isLogged })
 renderNav()
 
-
+// api.login()
+// api.getCards()
 
 
 function handleLogin(e) {
@@ -25,7 +29,8 @@ function handleLogin(e) {
     return
   }
 
-  let answer = Auth.checkCredentials(usernameInp.value, passwordInp.value)
+  api = new Api({ email: usernameInp.value, password: passwordInp.value })
+  let answer = api.login()
   if (!answer) {
     errorEl.textContent = "Check credentials again"
     passwordInp.value = ""
@@ -33,26 +38,16 @@ function handleLogin(e) {
   } else {
     console.log("Logged in successfully")
     isLogged = true
-    saveCredentials(usernameInp.value, passwordInp.value)
     renderNav()
-
   }
 }
 
 function handleLogout() {
-  localStorage.setItem('credentials', null)
+  Auth.logout()
   isLogged = false
   renderNav()
 }
 
-
-function saveCredentials(username, password) {
-  localStorage.setItem('credentials', JSON.stringify({
-    username,
-    password,
-    loginTime: Date.now()
-  }))
-}
 
 function renderNav() {
   let btnLogin = document.querySelector(".nav .btn-login")
@@ -127,8 +122,8 @@ for (let visit of visits) {
     case "dentist":
       V = new VisitDentist(visit)
       break;
-    case "therapist" : 
-      V = new VisitTherapist(visit)  
+    case "therapist":
+      V = new VisitTherapist(visit)
       break;
   }
 
@@ -142,3 +137,4 @@ for (let visit of visits) {
 document.querySelector(".modal-login .btn-login").onclick = handleLogin
 document.querySelector(".nav .btn-logout").onclick = handleLogout
 document.querySelector(".create-visit-modal .doctor ").onchange = renderVisitModalFields
+
