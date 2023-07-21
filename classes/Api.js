@@ -2,18 +2,17 @@
 export default class Api {
 
 
-  card = axios.create({
-    baseURL: "https://ajax.test-danit.com/api/v2/cards/",
-    timeout: 5000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.token}`
-    }
-  })
-
 
   constructor(token) {
     this.token = token
+    this.card = axios.create({
+      baseURL: "https://ajax.test-danit.com/api/v2/cards/",
+      timeout: 5000,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.token}`
+      }
+    })
   }
 
 
@@ -23,7 +22,7 @@ export default class Api {
       let response = await axios.post("https://ajax.test-danit.com/api/v2/cards/login", { email, password },)
       if (response.status.toString().startsWith('2')) {
         let token = response.data
-        return true
+        return token
       }
     } catch (err) {
       console.log('err')
@@ -39,8 +38,9 @@ export default class Api {
     return false
   }
 
-  async addCard() {
-    let res = await this.card.post('')
+  async addCard(obj) {
+    console.log('adding card', this.token)
+    let res = await this.card.post('', obj)
     if (res.status.toString().startsWith(2)) {
       return res.data
     }

@@ -33,36 +33,31 @@ function renderNav() {
 
 
 
-let visits = [
-  {
-    fullName: "Nihat Abdullazade",
-    doctor: "cardiologist",
-    age: 18,
-    reason: "Bllllo"
-  }
-]
 
-
-for (let visit of visits) {
-  let V
-  switch (visit.doctor) {
-    case "cardiologist":
-      V = new VisitCardiologist(visit)
-      break;
-    case "dentist":
-      V = new VisitDentist(visit)
-      break;
-    case "therapist":
-      V = new VisitTherapist(visit)
-      break;
-  }
-
-  let div = V.render()
-  document.querySelector('.visits-board').append(div)
-
-
-
+async function renderVisits() {
+  let api = new Api(Auth.getToken())
+  let cards = await api.getCards()
+  console.log(cards)
 }
+
+
+renderVisits()
+//   switch (visit.doctor) {
+//     case "cardiologist":
+//       V = new VisitCardiologist(visit)
+//       break;
+//     case "dentist":
+//       V = new VisitDentist(visit)
+//       break;
+//     case "therapist":
+//       V = new VisitTherapist(visit)
+//       break;
+//   let div = V.render()
+//   document.querySelector('.visits-board').append(div)
+
+
+
+// }
 
 document.querySelector(".nav .btn-logout").onclick = function handleLogout() { Auth.logout(); isLogged = false; renderNav() }
 document.querySelector(".nav .btn-login").onclick = () => loginModal.show()
