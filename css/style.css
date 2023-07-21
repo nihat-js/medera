@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  background-color: #f9fafb;
+  background-color: #f5f7f9;
 }
 
 .modal {
@@ -92,9 +92,90 @@ body {
   box-shadow: 0 4px 8px #82b0d3;
 }
 
+.create-visit-modal {
+  display: flex;
+}
+.create-visit-modal h4 {
+  margin-bottom: 10px;
+}
+.create-visit-modal input {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  padding: 5px 0;
+  transition: all 0.3s;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.create-visit-modal input:focus {
+  border-bottom: 2px solid dodgerblue;
+}
+.create-visit-modal textarea {
+  resize: none;
+  border: 2px solid #ccc;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  transition: all 0.3s;
+}
+.create-visit-modal textarea:focus {
+  border-color: dodgerblue;
+  box-shadow: 0 0 5px dodgerblue;
+}
+.create-visit-modal .blood-pressure {
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.create-visit-modal .blood-pressure input {
+  width: 100%;
+}
+.create-visit-modal select {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
 nav {
   max-width: 1200px;
   margin: 1rem auto;
   display: flex;
   justify-content: space-between;
+}
+nav .actions {
+  display: flex;
+  gap: 15px;
+}
+nav button {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+}
+nav .btn-login,
+nav .btn-logout {
+  border: 1px solid #3232c8;
+  background-color: transparent;
+  color: #3232c8;
+}
+nav .btn-login:hover,
+nav .btn-logout:hover {
+  background-color: #3232c8;
+  color: #fff;
+  border: 1px solid #fff;
+}
+nav .btn-create-visit {
+  background-color: #3D76B3;
+  background-image: linear-gradient(to right, #FF8C00, #FF1493);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  transition: transform 0.2s ease-in-out;
+}
+nav .btn-create-visit:hover {
+  transform: scale(1.05);
 }/*# sourceMappingURL=style.css.map */

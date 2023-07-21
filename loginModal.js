@@ -1,13 +1,13 @@
-import Api  from "./Api.js";
-import Auth from "./Auth.js";
-import Modal from "./Modal.js";
+import Api  from "./classes/Api.js";
+import Auth from "./classes/Auth.js";
+import Modal from "./classes/Modal.js";
 
 export function generateloginModal(renderNav) {
   let loginModal = new Modal('login-modal')
 
   const imgElement = document.createElement("img");
   imgElement.className = "security";
-  imgElement.src = "./security.svg";
+  imgElement.src = "./img/security.svg";
   imgElement.alt = "";
 
   const emailLabel = document.createElement("label");

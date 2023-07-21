@@ -29,7 +29,6 @@ export default class Modal {
     this.modalDiv.style.display = 'none'
   }
   show(){
-    console.log('gel de',this.modalDiv)
     this.modalDiv.style.display = 'flex'
   }
 

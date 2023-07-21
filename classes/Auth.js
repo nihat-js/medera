@@ -1,4 +1,4 @@
-import Database from './Database.js';
+import Database from './_Database.js';
 export default class Auth {
   static logout() {
     localStorage.setItem('credentials', null)

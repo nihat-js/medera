@@ -3,7 +3,7 @@ export default class Api {
 
 
   card = axios.create({
-    baseURL: "https://ajax.test-danit.com/api/v2/cards",
+    baseURL: "https://ajax.test-danit.com/api/v2/cards/",
     timeout: 5000,
     headers: {
       'Content-Type': 'application/json',
@@ -32,11 +32,27 @@ export default class Api {
   }
 
   async getCards() {
-    let resp = await this.card.request('/')
-    console.log(resp)
+    let res = await this.card.get('/')
+    if (res.status.toString().startsWith('2')) {
+      return res.data
+    }
+    return false
   }
-  add() {
 
+  async addCard() {
+    let res = await this.card.post('')
+    if (res.status.toString().startsWith(2)) {
+      return res.data
+    }
+    return false
+  }
+
+  async deleteCard() {
+    let res = await this.card.delete(id,)
+    if (res.status.toString().startsWith(2)) {
+      return true
+    }
+    return false
   }
 
 
