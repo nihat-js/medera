@@ -1,6 +1,5 @@
-import Auth from "./Auth.js";
 
-export class Api {
+export default class Api {
 
 
   card = axios.create({
@@ -12,21 +11,22 @@ export class Api {
     }
   })
 
-  constructor({ email, password, token }) {
-    this.email = email;
-    this.password = password
-    this.token = token
 
+  constructor(token) {
+    this.token = token
   }
 
-  async login() {
-    let response = await axios.post("https://ajax.test-danit.com/api/v2/cards/login", { email: this.email, password: this.password },)
-    if (response.status.toString().startsWith('2')) {
-      let token = response.data
-      this.token = token
-      Auth.setToken(token)
-      localStorage.setItem('credentials', JSON.stringify({ email: this.email, token: token }))
-      return true
+
+
+  static async login(email, password) {
+    try {
+      let response = await axios.post("https://ajax.test-danit.com/api/v2/cards/login", { email, password },)
+      if (response.status.toString().startsWith('2')) {
+        let token = response.data
+        return true
+      }
+    } catch (err) {
+      console.log('err')
     }
     return false
   }
@@ -34,7 +34,6 @@ export class Api {
   async getCards() {
     let resp = await this.card.request('/')
     console.log(resp)
-
   }
   add() {
 

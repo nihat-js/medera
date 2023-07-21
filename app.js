@@ -1,66 +1,32 @@
-import { Api } from "./Api.js"
+import Api from "./Api.js"
 import Auth from "./Auth.js"
+import Modal from "./Modal.js"
 import { VisitCardiologist, VisitDentist, VisitTherapist } from "./Visit.js"
+import { generateloginModal, } from "./loginModal.js"
+import { generateCreateVisitModal } from "./createVisitModal.js"
 
 
-let isLogged = false
-let api
-
-let token = Auth.getToken()
-if (token) {
-  isLogged = true
-}
-console.log({ isLogged })
-renderNav()
-
-// api.login()
-// api.getCards()
+let isLogged = Boolean(Auth.getToken())
+let loginModal = generateloginModal(renderNav)
+let createVisitModal = generateCreateVisitModal()
+document.body.append(loginModal.render(), createVisitModal.render())
 
 
-function handleLogin(e) {
-  e.preventDefault()
-  let form = e.target.parentElement
-  let errorEl = form.querySelector(".error")
-  let usernameInp = form.querySelector(".inp-username")
-  let passwordInp = form.querySelector(".inp-password")
 
-  if (!usernameInp.value || !passwordInp.value) {
-    errorEl.textContent = "Fill all the inputs"
-    return
-  }
-
-  api = new Api({ email: usernameInp.value, password: passwordInp.value })
-  let answer = api.login()
-  if (!answer) {
-    errorEl.textContent = "Check credentials again"
-    passwordInp.value = ""
-    passwordInp.focus()
-  } else {
-    console.log("Logged in successfully")
-    isLogged = true
-    renderNav()
-  }
-}
-
-function handleLogout() {
-  Auth.logout()
-  isLogged = false
-  renderNav()
-}
 
 
 function renderNav() {
   let btnLogin = document.querySelector(".nav .btn-login")
   let btnLogout = document.querySelector(".nav .btn-logout")
-  let btnCreate = document.querySelector(".nav .btn-create")
+  let btnCreateVisit = document.querySelector(".nav .btn-create-visit")
   if (isLogged) {
     btnLogin.style.display = "none"
     btnLogout.style.display = "block"
-    btnCreate.style.display = "block"
+    btnCreateVisit.style.display = "block"
   } else {
     btnLogin.style.display = "block"
     btnLogout.style.display = "none"
-    btnCreate.style.display = "none"
+    btnCreateVisit.style.display = "none"
 
   }
 }
@@ -134,7 +100,11 @@ for (let visit of visits) {
 
 }
 
-document.querySelector(".modal-login .btn-login").onclick = handleLogin
-document.querySelector(".nav .btn-logout").onclick = handleLogout
-document.querySelector(".create-visit-modal .doctor ").onchange = renderVisitModalFields
+document.querySelector(".nav .btn-logout").onclick = function handleLogout() { Auth.logout(); isLogged = false; renderNav() }
+document.querySelector(".nav .btn-login").onclick = () => loginModal.show()
+document.querySelector(".nav .btn-create-visit").onclick = () => createVisitModal.show()
+
+renderNav()
+
+// document.querySelector(".create-visit-modal .doctor ").onchange = renderVisitModalFields
 

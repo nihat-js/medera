@@ -6,10 +6,11 @@ export default class Auth {
   static getToken() {
     try {
       let object = JSON.parse(localStorage.credentials)
-      if (object.token) {
+      if (object?.token) {
         return object.token
       }
     } catch (e) {
+      localStorage.credentials = null
       console.log("Error parsing credentials", e)
     }
     return false
@@ -22,7 +23,7 @@ export default class Auth {
       } else {
         object = { token }
       }
-      localStorage.setItem('credentials', object)
+      localStorage.setItem('credentials', JSON.stringify(object))
     } catch (e) {
       console.log("Error parsing credentials", e)
     }

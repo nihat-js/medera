@@ -1,65 +1,112 @@
-*{
-  margin:0;
+* {
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
 }
-input,textarea {
+
+input,
+textarea {
   resize: none;
   outline: none;
-  
+
 }
-html{
+
+html {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-body{
+
+body {
   background-color: #f9fafb;
 }
-.modal-login {
-  max-width: 500px;
+
+.modal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  background-color: #fcfcfc;
-  padding: 30px 40px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.25) , 0 8px 16px rgba(0,0,0,0.1);
-  border-radius: 6px;
-  // display: none;
-  label{
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  &-container {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #fcfcfc;
+    padding: 30px 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    background-color: #c83232;
+    font-size: 15px;
+    line-height: 15px;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    &:hover {
+      opacity: .7;
+    }
+  }
+}
+
+.login-modal {
+  .security {
+    height: 50px;
+    margin-bottom: 20px;
+  }
+
+
+  label {
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 10px;
   }
-  button{
-    color : #fff;
+
+  .btn-login {
+    color: #fff;
     background-color: #5050c8;
     border-radius: 6px;
     width: 100%;
     padding: 15px 20px;
     border: none;
     margin-top: 25px;
-    &:hover{
+
+    &:hover {
       opacity: .9;
     }
   }
-  .error{
-    color : #c83232;
+
+  .error {
+    color: #c83232;
     font-weight: bold;
   }
+
   input {
     background-color: #fff;
     outline: none;
     border: 1px solid #e9e9e9;
     padding: 10px 15px;
     margin-bottom: 10px;
-    &:focus{
-      box-shadow:  0 4px 8px #82b0d3;
+
+    &:focus {
+      box-shadow: 0 4px 8px #82b0d3;
     }
   }
 }
 
 nav {
   max-width: 1200px;
-  margin:  1rem auto;
+  margin: 1rem auto;
   display: flex;
   justify-content: space-between;
 }
