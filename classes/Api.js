@@ -39,12 +39,15 @@ export default class Api {
   }
 
   async addCard(obj) {
-    console.log('adding card', this.token)
     let res = await this.card.post('', obj)
     if (res.status.toString().startsWith(2)) {
       return res.data
     }
     return false
+  }
+
+  async saveCard(obj) {
+    return await this.card.put(obj.id.toString(), obj)
   }
 
   async deleteCard(id) {

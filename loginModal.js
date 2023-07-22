@@ -2,7 +2,7 @@ import Api  from "./classes/Api.js";
 import Auth from "./classes/Auth.js";
 import Modal from "./classes/Modal.js";
 
-export function generateloginModal(renderNav) {
+export function generateloginModal(renderNav,renderCards) {
   let loginModal = new Modal('login-modal')
 
   const imgElement = document.createElement("img");
@@ -63,7 +63,10 @@ export function generateloginModal(renderNav) {
       console.log("Logged in successfully")
       Auth.setToken(token)
       loginModal.hide()
+      document.querySelector('body > .container').style.display = "block"
       renderNav()
+      renderCards()
+
     }
   }
 

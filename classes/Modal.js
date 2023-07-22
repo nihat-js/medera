@@ -21,6 +21,8 @@ export default class Modal {
       }
     })
   }
+  
+
   appendBody(){
     this.modalDiv.querySelector('.modal-container').append(...arguments)
   }

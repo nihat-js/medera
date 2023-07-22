@@ -6,12 +6,15 @@ export class Visit {
   #createdAt = Date.now()
   #parentDiv = null
   #showMoreBtn = null
-  constructor({ doctor, purpose, description, urgency, fullName, }) {
+  constructor({ id, doctor, purpose, description, urgency, fullName, }) {
+
+    this.id = id // unknown
     this.doctor = doctor
     this.purpose = purpose
     this.description = description
     this.urgency = urgency
     this.fullName = fullName
+    this.api = new Api(Auth.getToken())
 
   }
 
@@ -22,14 +25,40 @@ export class Visit {
     return true
   }
 
+  async add(obj) {
+    let result = await this.api.addCard({
+      doctor: this.doctor,
+      purpose: this.purpose,
+      description: this.description,
+      urgency: this.urgency,
+      fullName: this.fullName,
+      status: this.status,
+      ...obj
+    })
+    return result
+  }
+
+  async save(obj) {
+    return await this.api.saveCard({
+      id : this.id,
+      doctor: this.doctor,
+      purpose: this.purpose,
+      description: this.description,
+      urgency: this.urgency,
+      fullName: this.fullName,
+      status: this.status,
+      ...obj
+    })
+  }
+
 
 
 }
 
 export class VisitCardiologist extends Visit {
 
-  constructor({ doctor, purpose, description, urgency, fullName, lowBloodPressure, highBloodPressure, bmi, previouslyDiseases, age, }) {
-    super({ doctor, purpose, description, urgency, fullName, })
+  constructor({ id, doctor, purpose, description, urgency, fullName, lowBloodPressure, highBloodPressure, bmi, previouslyDiseases, age, }) {
+    super({ id, doctor, purpose, description, urgency, fullName, })
     this.lowBloodPressure = lowBloodPressure
     this.highBloodPressure = highBloodPressure
     this.bmi = bmi
@@ -37,22 +66,26 @@ export class VisitCardiologist extends Visit {
     this.age = age
   }
 
-  async save() {
-    let api = new Api(Auth.getToken())
-    let result = await api.addCard({
-      doctor: this.doctor,
-      purpose: this.purpose,
-      description: this.description,
-      urgency: this.urgency,
-      fullName: this.fullName,
+  async add() {
+    let result = await super.add({
       lowBloodPressure: this.lowBloodPressure,
       highBloodPressure: this.highBloodPressure,
       bmi: this.bmi,
       previouslyDiseases: this.previouslyDiseases,
       age: this.age,
-      status : this.status
     })
+    console.log('buuuu')
     return result
+  }
+
+  async save() {
+    return await super.save(this.id, {
+      lowBloodPressure: this.lowBloodPressure,
+      highBloodPressure: this.highBloodPressure,
+      bmi: this.bmi,
+      previouslyDiseases: this.previouslyDiseases,
+      age: this.age,
+    })
   }
 
   validate() {
@@ -63,30 +96,32 @@ export class VisitCardiologist extends Visit {
 
 
 export class VisitDentist extends Visit {
-  constructor({ doctor, purpose, description, urgency, fullName, lastVisitDate }) {
-    super({ doctor, purpose, description, urgency, fullName, })
+  constructor({ id, doctor, purpose, description, urgency, fullName, lastVisitDate }) {
+    super({ id, doctor, purpose, description, urgency, fullName, })
     this.lastVisitDate = this.lastVisitDate
   }
-  async save() {
-    let api = new Api(Auth.getToken())
-    let result = await api.addCard({
-      doctor: this.doctor,
-      purpose: this.purpose,
-      description: this.description,
-      urgency: this.urgency,
-      fullName: this.fullName,
+  async add() {
+    let result = await super.add({
       lastVisitDate: this.lastVisitDate,
-      status : this.status
     })
     return result
+  }
+
+  async save() {
+    return await super.save(this.id, {
+      lowBloodPressure: this.lowBloodPressure,
+      highBloodPressure: this.highBloodPressure,
+      bmi: this.bmi,
+      previouslyDiseases: this.previouslyDiseases,
+      age: this.age,
+    })
   }
 }
 
 export class VisitTherapist extends Visit {
-  constructor({ doctor, purpose, description, urgency, fullName, age }) {
-    super({ doctor, purpose, description, urgency, fullName, })
+  constructor({ id, doctor, purpose, description, urgency, fullName, age }) {
+    super({ id, doctor, purpose, description, urgency, fullName, })
     this.age = this.age
-    status : this.status
   }
 
   async validate() {
@@ -94,17 +129,17 @@ export class VisitTherapist extends Visit {
     if (this.age < 0 || this.age > 200) return "Please type  correct age"
 
   }
-  async save() {
-    let api = new Api(Auth.getToken())
-    let result = await api.addCard({
-      doctor: this.doctor,
-      purpose: this.purpose,
-      description: this.description,
-      urgency: this.urgency,
-      fullName: this.fullName,
+  async add() {
+    return await super.addCard({
       age: this.age,
-      status : this.status
     })
-    return result
   }
+
+  async save(){
+    return await super.save({
+      age :this.age,
+    })
+  }
+
+
 }

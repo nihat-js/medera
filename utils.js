@@ -15,3 +15,14 @@ export function renderNav() {
 
   }
 }
+
+export function filterCards(cards , filter) {
+  return cards.filter(card => {
+    if ((filter.status && filter.status != card.status) || (filter.urgency && filter.urgency != card.urgency) || (filter.fullName && !card.fullName?.toLowerCase().includes(filter.fullName.toLowerCase())) ||
+      (filter.description && !card.description?.toLowerCase().includes(filter.description.toLowerCase()))
+    ) {
+      return false
+    }
+    return true
+  })
+}

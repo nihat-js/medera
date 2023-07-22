@@ -24,7 +24,7 @@ export default class VisitModal extends Modal {
     option4.textContent = "Therapist";
 
     selectDoctor.append(option2, option3, option4);
-    // selectDoctor.onchange = this.renderFields
+    selectDoctor.onchange = this.renderFields.bind(this)
 
 
     const lowBloodPressureInput = document.createElement("input");
@@ -138,6 +138,8 @@ export default class VisitModal extends Modal {
       bloodPressureDiv, bmiInput, previouslyDiseasesInput, ageHeader, ageInput, lastVisitHeader, lastVisitDateInput,errorSpan // extras
     )
 
+    this.renderFields()
+
 
 
   }
@@ -153,7 +155,7 @@ export default class VisitModal extends Modal {
     for (let extra of extras) {
       extra.style.display = "none"
     }
-    switch (selectDoctor.value) {
+    switch (this.selectDoctor.value) {
       case "cardiologist":
         this.lowBloodPressureInput.style.display = "block"
         this.highBloodPressureInput.style.display = "block"

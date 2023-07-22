@@ -1,71 +1,77 @@
 import Modal from "./classes/Modal.js";
 import VisitModal from "./classes/VisitModal.js"
-import { VisitCardiologist, VisitDentist, VisitTherapist } from "./classes/Visit.js";
+import { Visit,VisitCardiologist, VisitDentist, VisitTherapist } from "./classes/Visit.js";
 
 
 
 
-export function generateEditVisitModal() {
-  let modal = new VisitModal("edit-visit-modal")
+export function generateEditVisitModal(renderCards) {
+  let modal = new VisitModal("visit-modal")
 
-  let btnSaveChanges = document.createElement('button')
-  btnSaveChanges.textContent = "Save changes"
-  btnSaveChanges.onclick =  handleBtnSaveChanges.bind(modal)
-
+  let btnsSave = document.createElement('button')
+  btnsSave.classList.add('btn-save')
+  btnsSave.textContent = "Save changes"
+  
+  btnsSave.onclick =  handleBtnSave.bind(modal,renderCards)
+  
   let btnDiscard = document.createElement('button')
   btnDiscard.textContent = "Discard changes"
-  btnDiscard.onclick = this.modal.hide
+  btnDiscard.classList.add('btn-discard')
+  btnDiscard.onclick = modal.hide.bind(modal)
 
-  modal.appendBody(btnCreate)
+  modal.appendBody(btnsSave,btnDiscard)
   return modal
 }
 
 
 
 
-async function handleBtnSave(){
-    let visit
-    let {selectDoctor , visitPurposeTextarea , visitDescriptionTextarea , selectUrgency , fullNameInput , lowBloodPressureInput, highBloodPressureInput , bmiInput ,ageInput } = this
-    switch (selectDoctor.value) {
-      case 'cardiologist':
-        visit = new VisitCardiologist({
-          doctor: selectDoctor.value,
-          purpose: visitPurposeTextarea.value,
-          description: visitDescriptionTextarea.value,
-          urgency: selectUrgency.value,
-          fullName: fullNameInput.value,
-          lowBloodPressure: lowBloodPressureInput.value,
-          highBloodPressure: highBloodPressureInput.value,
-          bmi: bmiInput.value,
-          age: ageInput.value,
-        })
-        break;
-      case 'dentist':
-        visit = new VisitDentist({
-          doctor: selectDoctor.value,
-          purpose: visitPurposeTextarea.value,
-          description: visitDescriptionTextarea.value,
-          urgency: selectUrgency.value,
-          fullName: fullNameInput.value,
-          lastVisitDate: lastVisitDateInput.value
-        })
-        break;
-      case 'therapist':
-        visit = new VisitTherapist({
-          doctor: selectDoctor.value,
-          purpose: visitPurposeTextarea.value,
-          description: visitDescriptionTextarea.value,
-          urgency: selectUrgency.value,
-          fullName: fullNameInput.value,
-          age: this.age
-        })
-        break;
-      default:
-    }
-  
-    let result = await visit.save()
-    if (result) {
-      this.hide()
-    }
-}
+async function handleBtnSave(renderCards) {
+  let visit
+  let mainFields = {
+    id : this.id,
+    doctor: this.selectDoctor.value,
+    purpose: this.visitPurposeTextarea.value,
+    description: this.visitDescriptionTextarea.value,
+    urgency: this.selectUrgency.value,
+    fullName: this.fullNameInput.value,
+    
+  }
 
+  let foo = Visit.validate(mainFields)
+  if (!foo){
+    this.setError("Fill the fields")
+    return false
+  }
+
+  switch (this.selectDoctor.value) {
+    case 'cardiologist':
+      visit = new VisitCardiologist({
+        ...mainFields,
+        lowBloodPressure: this.lowBloodPressureInput.value,
+        highBloodPressure: this.highBloodPressureInput.value,
+        bmi: this.bmiInput.value,
+        age: this.ageInput.value,
+      })
+      break;
+    case 'dentist':
+      visit = new VisitDentist({
+        ...mainFields,
+        lastVisitDate: this.lastVisitDateInput.value
+      })
+      break;
+    case 'therapist':
+      visit = new VisitTherapist({
+        ...mainFields,
+        age: this.age
+      })
+      break;
+    default:
+  }
+  console.log({visit})
+  let result = await visit.save()
+  if (result) {
+    renderCards()
+  }
+  this.hide()
+}
