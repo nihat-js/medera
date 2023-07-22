@@ -47,8 +47,8 @@ export default class Api {
     return false
   }
 
-  async deleteCard() {
-    let res = await this.card.delete(id,)
+  async deleteCard(id) {
+    let res = await this.card.delete(id.toString())
     if (res.status.toString().startsWith(2)) {
       return true
     }

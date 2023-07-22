@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="./app.js" type="module" defer></script>
 </head>
+
 <body>
 
   <nav class="nav">
@@ -22,33 +24,40 @@
   </nav>
 
   <div class="container">
+
+    <form class="filter">
+      <input type="text" class="inp-full-name" placeholder="Search by full name">
+      <input type="search" class="inp-description" id="" placeholder="Search by description">
+      <span> Status </span>
+      <select class="select-status" id="">
+        <option value="" selected> All </option>
+        <option value="open">Open</option>
+        <option value="don">Done</option>
+      </select>
+      <span> Urgency </span>
+      <select class="select-urgency" id="">
+        <option value="" selected>All</option>
+        <option value="urgent">High</option>
+        <option value="priority">Normal</option>
+        <option value="normal">Low</option>
+      </select>
+    </form>
+
+    <div class="cards ">
+
+    </div>
   </div>
 
 
 
 
-  <form class="filtering-visits">
-    <input type="search" name="" id="">
-    <span> Status </span>
-    <select name="" id="">
-      <option value="">Open</option>
-      <option value="">Done</option>
-    </select>
-    <select name="" id="">
-      <option value="">High</option>
-      <option value="">Normal</option>
-      <option value="">Low</option>
-    </select>
-  </form>
-
-  <div class="visits-board">
-
-  </div>
 
 
 
-  
+
+
 
 
 </body>
+
 </html>

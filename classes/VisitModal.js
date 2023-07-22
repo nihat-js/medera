@@ -2,9 +2,9 @@ import Modal from "./Modal.js";
 import { VisitCardiologist, VisitDentist, VisitTherapist } from "./Visit.js";
 
 
-export class VisitModal extends Modal {
+export default class VisitModal extends Modal {
   constructor(className) {
-    let modal = new Modal("visit-modal")
+    super(className)
     const selectDoctorHeader = document.createElement("h4");
     selectDoctorHeader.textContent = "Select Doctor";
 
@@ -24,7 +24,7 @@ export class VisitModal extends Modal {
     option4.textContent = "Therapist";
 
     selectDoctor.append(option2, option3, option4);
-    selectDoctor.onchange = renderFields
+    // selectDoctor.onchange = this.renderFields
 
 
     const lowBloodPressureInput = document.createElement("input");
@@ -93,15 +93,15 @@ export class VisitModal extends Modal {
     selectUrgency.id = "";
 
     const optionUrgency1 = document.createElement("option");
-    optionUrgency1.value = "";
+    optionUrgency1.value = "normal";
     optionUrgency1.textContent = "normal";
 
     const optionUrgency2 = document.createElement("option");
-    optionUrgency2.value = "";
+    optionUrgency2.value = "priority";
     optionUrgency2.textContent = "priority";
 
     const optionUrgency3 = document.createElement("option");
-    optionUrgency3.value = "";
+    optionUrgency3.value = "urgent";
     optionUrgency3.textContent = "urgent";
 
     selectUrgency.appendChild(optionUrgency1);
@@ -115,9 +115,9 @@ export class VisitModal extends Modal {
     const fullNameInput = document.createElement("input");
     fullNameInput.type = "text";
 
-    let btnCreate = document.createElement("button");
-    btnCreate.textContent = "Add visit"
 
+    const errorSpan = document.createElement("span")
+    errorSpan.className="error"
 
     this.selectDoctor = selectDoctor
     this.visitPurposeTextarea = visitPurposeTextarea
@@ -126,67 +126,27 @@ export class VisitModal extends Modal {
     this.fullNameInput = fullNameInput
     this.lowBloodPressureInput = lowBloodPressureInput
     this.highBloodPressureInput = highBloodPressureInput
+    this.bmiInput = bmiInput
     this.previouslyDiseasesInput = previouslyDiseasesInput
     this.ageHeader = ageHeader
     this.ageInput = ageInput
     this.lastVisitHeader = lastVisitHeader
     this.lastVisitDateInput = lastVisitDateInput
+    this.errorSpan = errorSpan
 
-    modal.appendBody(selectDoctorHeader, selectDoctor, visitPurposeHeader, visitPurposeTextarea, visitDescriptionHeader, visitDescriptionTextarea, selectUrgencyHeader, selectUrgency, fullNameHeader, fullNameInput,
-      bloodPressureDiv, bmiInput, previouslyDiseasesInput, ageHeader, ageInput, lastVisitHeader, lastVisitDateInput, // extras
-      btnCreate)
+    this.appendBody(selectDoctorHeader, selectDoctor, visitPurposeHeader, visitPurposeTextarea, visitDescriptionHeader, visitDescriptionTextarea, selectUrgencyHeader, selectUrgency, fullNameHeader, fullNameInput,
+      bloodPressureDiv, bmiInput, previouslyDiseasesInput, ageHeader, ageInput, lastVisitHeader, lastVisitDateInput,errorSpan // extras
+    )
 
-    this.modal = modal
 
-    // btnCreate.onclick = async () => {
-    //   let visit
-    //   switch (selectDoctor.value) {
-    //     case 'cardiologist':
-    //       visit = new VisitCardiologist({
-    //         doctor: selectDoctor.value,
-    //         purpose: visitPurposeTextarea.value,
-    //         description: visitDescriptionTextarea.value,
-    //         urgency: selectUrgency.value,
-    //         fullName: fullNameInput.value,
-    //         lowBloodPressure: lowBloodPressureInput.value,
-    //         highBloodPressure: highBloodPressureInput.value,
-    //         bmi: bmiInput.value,
-    //         age: ageInput.value,
-    //       })
-    //       break;
-    //     case 'dentist':
-    //       visit = new VisitDentist({
-    //         doctor: selectDoctor.value,
-    //         purpose: visitPurposeTextarea.value,
-    //         description: visitDescriptionTextarea.value,
-    //         urgency: selectUrgency.value,
-    //         fullName: fullNameInput.value,
-    //         lastVisitDate: lastVisitDateInput.value
-    //       })
-    //       break;
-    //     case 'therapist':
-    //       visit = new VisitTherapist({
-    //         doctor: selectDoctor.value,
-    //         purpose: visitPurposeTextarea.value,
-    //         description: visitDescriptionTextarea.value,
-    //         urgency: selectUrgency.value,
-    //         fullName: fullNameInput.value,
-    //         age: this.age
-    //       })
-    //       break;
-    //     default:
-    //   }
 
-    //   let result = await visit.save()
-    //   if (result) {
-    //     modal.hide()
-    //   }
-    // }
   }
 
-  appendButton(el) {
-    this.appendButton()
+  setError(str){
+    this.errorSpan.textContent = str
   }
+
+
 
   renderFields() {
     let extras = [this.lowBloodPressureInput, this.highBloodPressureInput, this.bmiInput, this.previouslyDiseasesInput, this.ageHeader, this.ageInput, this.lastVisitHeader, this.lastVisitDateInput]
@@ -195,25 +155,22 @@ export class VisitModal extends Modal {
     }
     switch (selectDoctor.value) {
       case "cardiologist":
-        lowBloodPressureInput.style.display = "block"
-        highBloodPressureInput.style.display = "block"
-        bmiInput.style.display = "block"
-        previouslyDiseasesInput.style.display = "block"
+        this.lowBloodPressureInput.style.display = "block"
+        this.highBloodPressureInput.style.display = "block"
+        this.bmiInput.style.display = "block"
+        this.previouslyDiseasesInput.style.display = "block"
         break;
       case "dentist":
-        lastVisitHeader.style.display = "block"
-        lastVisitDateInput.style.display = "block"
+        this.lastVisitHeader.style.display = "block"
+        this.lastVisitDateInput.style.display = "block"
         break;
       case "therapist":
-        ageHeader.style.display = "block"
-        ageInput.style.display = "block"
+        this.ageHeader.style.display = "block"
+        this.ageInput.style.display = "block"
         break;
     }
   }
 
-  render(){
-    return this.modal
-  }
 
 
 

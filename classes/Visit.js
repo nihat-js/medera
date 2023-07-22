@@ -2,12 +2,11 @@ import Api from "./Api.js"
 import Auth from "./Auth.js"
 
 export class Visit {
-  #showMore = false
   #status = "open"
   #createdAt = Date.now()
   #parentDiv = null
   #showMoreBtn = null
-  constructor({ doctor, purpose, description, urgency, fullName,  }) {
+  constructor({ doctor, purpose, description, urgency, fullName, }) {
     this.doctor = doctor
     this.purpose = purpose
     this.description = description
@@ -16,46 +15,11 @@ export class Visit {
 
   }
 
-  handleShwoMore() {
-    let fields = this.parentDiv.querySelectorAll('.extra-fields')
-    if (this.showMore) {
-      for (let field of fields) {
-        field.style.display = 'none'
-      }
-      this.#showMoreBtn.innerText = "Show More"
-    } else {
-      for (let field of fields) {
-        field.style.display = 'block'
-      }
-      this.showMoreBtn.innerText = "Show Less"
+  static validate({ doctor, purpose, description, urgency, fullName }) {
+    if (!doctor || !purpose || !description || !urgency || !fullName) {
+      return false
     }
-    this.showMore = !this.showMore
-  }
-
-  render() {
-    let div = document.createElement("div")
-    div.classList = "box"
-    for (let key in this) {
-      let h3 = document.createElement("h3")
-      h3.innerText = `${key} :  ${this.key} `
-      let isExtra = key != "fullName" && key != "doctor"
-      h3.classList.add(key)
-      if (isExtra) {
-        h3.classList.add("extra-fields")
-        h3.style.display = "none"
-      }
-      div.appendChild(h3)
-    }
-
-    let showMoreBtn = document.createElement("button")
-    showMoreBtn.classList = "btn btn-show-more"
-    showMoreBtn.textContent = "Show more"
-    showMoreBtn.onclick = this.handleShwoMore.bind(this)
-    this.showMoreBtn = showMoreBtn
-
-    div.appendChild(showMoreBtn)
-    this.parentDiv = div
-    return div
+    return true
   }
 
 
@@ -65,7 +29,7 @@ export class Visit {
 export class VisitCardiologist extends Visit {
 
   constructor({ doctor, purpose, description, urgency, fullName, lowBloodPressure, highBloodPressure, bmi, previouslyDiseases, age, }) {
-    super({doctor, purpose, description, urgency, fullName,})
+    super({ doctor, purpose, description, urgency, fullName, })
     this.lowBloodPressure = lowBloodPressure
     this.highBloodPressure = highBloodPressure
     this.bmi = bmi
@@ -85,9 +49,13 @@ export class VisitCardiologist extends Visit {
       highBloodPressure: this.highBloodPressure,
       bmi: this.bmi,
       previouslyDiseases: this.previouslyDiseases,
-      age: this.age
+      age: this.age,
+      status : this.status
     })
     return result
+  }
+
+  validate() {
   }
 
 }
@@ -96,7 +64,7 @@ export class VisitCardiologist extends Visit {
 
 export class VisitDentist extends Visit {
   constructor({ doctor, purpose, description, urgency, fullName, lastVisitDate }) {
-    super({doctor, purpose, description, urgency, fullName,})
+    super({ doctor, purpose, description, urgency, fullName, })
     this.lastVisitDate = this.lastVisitDate
   }
   async save() {
@@ -108,6 +76,7 @@ export class VisitDentist extends Visit {
       urgency: this.urgency,
       fullName: this.fullName,
       lastVisitDate: this.lastVisitDate,
+      status : this.status
     })
     return result
   }
@@ -115,11 +84,16 @@ export class VisitDentist extends Visit {
 
 export class VisitTherapist extends Visit {
   constructor({ doctor, purpose, description, urgency, fullName, age }) {
-    super({doctor, purpose, description, urgency, fullName,})
+    super({ doctor, purpose, description, urgency, fullName, })
     this.age = this.age
-
+    status : this.status
   }
 
+  async validate() {
+    if (!this.age) return "Please fill age"
+    if (this.age < 0 || this.age > 200) return "Please type  correct age"
+
+  }
   async save() {
     let api = new Api(Auth.getToken())
     let result = await api.addCard({
@@ -129,6 +103,7 @@ export class VisitTherapist extends Visit {
       urgency: this.urgency,
       fullName: this.fullName,
       age: this.age,
+      status : this.status
     })
     return result
   }
