@@ -5,11 +5,11 @@ import { Visit, VisitCardiologist, VisitDentist, VisitTherapist } from "./classe
 
 
 
-export function generateCreateVisitModal() {
+export function generateCreateVisitModal(renderCards) {
   let modal = new VisitModal("visit-modal")
   let btnCreate = document.createElement('button')
   btnCreate.textContent = "Create"
-  btnCreate.onclick = handlBtnCreate.bind(modal)
+  btnCreate.onclick = handlBtnCreate.bind(modal, renderCards)
   modal.appendBody(btnCreate)
   return modal
 }
@@ -17,8 +17,8 @@ export function generateCreateVisitModal() {
 
 
 
-async function handlBtnCreate() {
-  let visit
+async function handlBtnCreate(renderCards) {
+  let visit, isValid
 
   let mainFields = {
     doctor: this.selectDoctor.value,
@@ -28,9 +28,9 @@ async function handlBtnCreate() {
     fullName: this.fullNameInput.value,
   }
 
-  let foo = Visit.validate(mainFields)
-  if (!foo){
-    this.setError("Fill the fields")
+  isValid = Visit.validate(mainFields) // main validation with parent class
+  if (typeof isValid != "boolean") {
+    this.setError(isValid)
     return false
   }
 
@@ -42,6 +42,7 @@ async function handlBtnCreate() {
         highBloodPressure: this.highBloodPressureInput.value,
         bmi: this.bmiInput.value,
         age: this.ageInput.value,
+        previouslyDiseases : this.previouslyDiseasesInput.value
       })
       break;
     case 'dentist':
@@ -53,15 +54,23 @@ async function handlBtnCreate() {
     case 'therapist':
       visit = new VisitTherapist({
         ...mainFields,
-        age: this.age
+        age: this.ageInput.value
       })
       break;
     default:
   }
 
-  let result = await visit.save()
+  isValid = visit.validate()  // child class validation
+  if (typeof isValid !== "boolean"){
+    this.setError(isValid)
+    return false
+  }
+
+
+  let result = await visit.add()
+  this.hide()
   if (result) {
-    this.hide()
+    renderCards()
   }
 }
 

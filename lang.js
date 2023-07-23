@@ -33,5 +33,17 @@ export let lang = {
   },
   age: {
     meaning: "Age"
+  },
+  lastVisitDate : {
+    meaning: "Last Visit Date"
+  },
+  status : {
+    meaning : "Status",
+  },
+  createdAt : {
+    meaning : "Created At"
+  },
+  lastUpdatedAt : {
+    meaning : "Last Updated At"
   }
 }

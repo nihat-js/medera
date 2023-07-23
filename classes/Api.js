@@ -39,6 +39,7 @@ export default class Api {
   }
 
   async addCard(obj) {
+    console.log(obj)
     let res = await this.card.post('', obj)
     if (res.status.toString().startsWith(2)) {
       return res.data

@@ -28,8 +28,8 @@ async function renderCards(refreshServer = true) {
   }
 
   document.querySelector('.cards').innerHTML = ""
-  
   let filteredCards = filterCards(cards,filter)
+  console.log('filteredCards',filteredCards)
   for (let card of filteredCards) {
     let areDetailsShown = false
     let div = document.createElement("div")

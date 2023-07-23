@@ -190,6 +190,7 @@ nav {
   margin: 1rem auto;
   display: flex;
   justify-content: space-between;
+  padding: 15px 0;
 }
 nav .actions {
   display: flex;
@@ -278,6 +279,7 @@ nav .btn-create-visit:hover {
   right: 0;
   top: 0;
   background-color: #c83232;
+  border-radius: 0 4px;
   color: #fff;
 }
 .cards .btn-delete:hover {

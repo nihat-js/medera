@@ -161,6 +161,8 @@ export default class VisitModal extends Modal {
         this.highBloodPressureInput.style.display = "block"
         this.bmiInput.style.display = "block"
         this.previouslyDiseasesInput.style.display = "block"
+        this.ageHeader.style.display = "block"
+        this.ageInput.style.display = "block"
         break;
       case "dentist":
         this.lastVisitHeader.style.display = "block"

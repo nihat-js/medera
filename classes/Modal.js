@@ -1,8 +1,8 @@
 export default class Modal {
   modalDiv = null
-  constructor(className){
+  constructor(className) {
     let modalDiv = document.createElement('div')
-    modalDiv.classList.add('modal',className)
+    modalDiv.classList.add('modal', className)
     modalDiv.style.display = "none"
     let containerDiv = document.createElement('div')
     containerDiv.classList.add('modal-container')
@@ -15,26 +15,30 @@ export default class Modal {
     containerDiv.append(closeBtn)
     modalDiv.append(containerDiv)
     this.modalDiv = modalDiv
-    window.addEventListener('click',(e)=>{
-      if (e.target.classList.contains('modal')){
-        this.hide()
-      }
-    })
+    window.addEventListener('click', (event) => this.handleClick(event, this))
+    window.addEventListener('keyup', (event) => this.handleKeyUp(event, this))
   }
-  
 
-  appendBody(){
+  handleKeyUp(event, this_) {
+    if (event.key === "Escape") this_.hide()
+  }
+
+  handleClick(event, this_) {
+    if (event.target.classList.contains('modal')) this_.hide()
+  }
+
+  appendBody() {
     this.modalDiv.querySelector('.modal-container').append(...arguments)
   }
 
-  hide(){
+  hide() {
     this.modalDiv.style.display = 'none'
   }
-  show(){
+  show() {
     this.modalDiv.style.display = 'flex'
   }
 
-  render(){
+  render() {
     return this.modalDiv
   }
 }
