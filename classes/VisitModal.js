@@ -117,7 +117,7 @@ export default class VisitModal extends Modal {
 
 
     const errorSpan = document.createElement("span")
-    errorSpan.className="error"
+    errorSpan.className = "error"
 
     this.selectDoctor = selectDoctor
     this.visitPurposeTextarea = visitPurposeTextarea
@@ -135,7 +135,7 @@ export default class VisitModal extends Modal {
     this.errorSpan = errorSpan
 
     this.appendBody(selectDoctorHeader, selectDoctor, visitPurposeHeader, visitPurposeTextarea, visitDescriptionHeader, visitDescriptionTextarea, selectUrgencyHeader, selectUrgency, fullNameHeader, fullNameInput,
-      bloodPressureDiv, bmiInput, previouslyDiseasesInput, ageHeader, ageInput, lastVisitHeader, lastVisitDateInput,errorSpan // extras
+      bloodPressureDiv, bmiInput, previouslyDiseasesInput, ageHeader, ageInput, lastVisitHeader, lastVisitDateInput, errorSpan // extras
     )
 
     this.renderFields()
@@ -144,8 +144,17 @@ export default class VisitModal extends Modal {
 
   }
 
-  setError(str){
+  setError(str) {
     this.errorSpan.textContent = str
+  }
+
+  reset() {
+    this.errorSpan.textContent = ""
+    let arr = [this.visitDescriptionTextarea , this.visitPurposeTextarea,this.fullNameInput, this.lowBloodPressureInput, this.highBloodPressureInput, this.ageInput, this.lastVisitDateInput]
+    for (let el of arr) {
+      console.log(el);
+      el.value = ""
+    }
   }
 
 

@@ -70,6 +70,7 @@ async function handlBtnCreate(renderCards) {
   let result = await visit.add()
   this.hide()
   if (result) {
+    this.reset()
     renderCards()
   }
 }

@@ -5,13 +5,13 @@ import { VisitCardiologist, VisitDentist, VisitTherapist } from "./classes/Visit
 import { generateloginModal, } from "./loginModal.js"
 import { generateCreateVisitModal } from "./createVisitModal.js"
 import { generateEditVisitModal } from "./editVisitModal.js"
-import { renderNav,  filterCards } from "./utils.js"
-import {lang} from "./lang.js"
-let loginModal = generateloginModal(renderNav,renderCards)
+import { renderNav, filterCards } from "./utils.js"
+import { lang } from "./lang.js"
+let loginModal = generateloginModal(renderNav, renderCards)
 let createVisitModal = generateCreateVisitModal(renderCards)
 let editVisitModal = generateEditVisitModal(renderCards)
-let cards , filter = {}
-document.body.append(loginModal.render(), createVisitModal.render(),editVisitModal.render())
+let cards, filter = {}
+document.body.append(loginModal.render(), createVisitModal.render(), editVisitModal.render())
 
 
 
@@ -21,23 +21,66 @@ document.body.append(loginModal.render(), createVisitModal.render(),editVisitMod
 
 async function renderCards(refreshServer = true) {
 
+  let cardsDiv = document.querySelector(".cards")
 
   if (refreshServer) {
     let api = new Api(Auth.getToken())
     cards = await api.getCards()
   }
 
-  document.querySelector('.cards').innerHTML = ""
-  let filteredCards = filterCards(cards,filter)
-  console.log('filteredCards',filteredCards)
+  cardsDiv.innerHTML = ""
+  let filteredCards = filterCards(cards, filter)
+  console.log('filteredCards', filteredCards)
   for (let card of filteredCards) {
     let areDetailsShown = false
     let div = document.createElement("div")
     div.classList = "box"
+    div.id = card.id
+    div.draggable = true
+
+
+
+
+    div.addEventListener('dragstart', (event) => {
+      event.dataTransfer.setData('text/plain', card.id);
+    });
+
+    cardsDiv.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      // event.target.style.translate = "10px 0"
+      // let timeoutId = setTimeout(()=>{
+      //   event.target.style.translate = "0 0 "
+      // },1000)
+    });
+
+
+    document.querySelectorAll('.cards .box').forEach(c => {
+      c.addEventListener('drop', (event) => {
+        event.preventDefault();
+        const draggedElementId = event.dataTransfer.getData('text/plain');
+        let el = document.getElementById(draggedElementId)
+        //swap dragged  element with the current element 
+        let arr =  Array.from (document.querySelectorAll('.cards .box'))
+
+        let draggedElementIndex = arr.findIndex(a => a.id == draggedElementId)
+        let originalElementIndex = arr.findIndex(a => a.id == c.id)
+        console.log(draggedElementIndex,originalElementIndex);
+
+        arr[originalElementIndex] = arr[draggedElementIndex]
+        arr[draggedElementIndex] = c
+        cardsDiv.append(...arr)
+      });
+
+    })
+
+
+
+
+
     for (let key in lang) {
       if (!card[key]) continue
       let h3 = document.createElement("h3")
-      h3.innerHTML = lang[key]?.meaning + ": " + "<span class='text-normal'>" + card[key] + '</span>' 
+      h3.innerHTML = lang[key]?.meaning + ": " + "<span class='text-normal'>" + card[key] + '</span>'
       if (!lang[key]?.main) {
         h3.classList.add('extra-fields')
         h3.style.display = "none"
@@ -97,7 +140,7 @@ async function renderCards(refreshServer = true) {
 
 
 
-document.querySelector(".nav .btn-logout").onclick = function handleLogout() { Auth.logout();  renderNav() , document.querySelector('body > .container').style.display = "none" }
+document.querySelector(".nav .btn-logout").onclick = function handleLogout() { Auth.logout(); renderNav(), document.querySelector('body > .container').style.display = "none" }
 document.querySelector(".nav .btn-login").onclick = () => loginModal.show()
 document.querySelector(".nav .btn-create-visit").onclick = () => createVisitModal.show()
 
@@ -107,9 +150,10 @@ document.querySelector('.filter  .select-status').onchange = (e) => { filter.sta
 document.querySelector('.filter .select-urgency').onchange = (e) => { filter.urgency = e.target.value; renderCards(false) }
 
 
-if (Auth.getToken()){
+if (Auth.getToken()) {
+  document.querySelector('body > .container').style.display = 'block'
   renderCards()
-}else{
+} else {
   document.querySelector('.cards').innerHTML += "No items have been added."
 }
 renderNav()
